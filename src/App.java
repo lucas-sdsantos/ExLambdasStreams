@@ -1,6 +1,9 @@
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 public class App {
@@ -68,14 +71,39 @@ public class App {
 						.average().orElse(-1);
 		System.out.printf("%.2f %n%n", media);
 
-        System.out.println("6. Funcionarios ordenados pelo código:");
+
+        System.out.println("6. Funcionarios ordenados pelo código:");  
+        List<Pessoa> funcPorCod = lista.stream()  
+                        .sorted( Comparator.comparing( Pessoa::getCodigo ))
+                        .collect(Collectors.toList());
+        funcPorCod.forEach(System.out::println);
+        System.out.println();
+
 
         System.out.println("7. Funcionários ordenados pela idade+nome:");
+        List<Pessoa> funcPorIdadeENome = lista.stream()  
+                      .sorted(Comparator.comparing( Pessoa::getIdade )
+                      .thenComparing( Pessoa::getNome ))   
+                      .collect(Collectors.toList());
+        funcPorIdadeENome.forEach(System.out::println);
+        System.out.println();
 
+        
         System.out.println("8. Criar uma nova lista apenas com os funcionarios do financeiro:");
+        List<Pessoa> financeiro = lista.stream()
+                      .filter(p -> p.getDpto() == Departamento.FINANCEIRO)
+                      .collect(Collectors.toList());
+        financeiro.forEach(System.out::println);
+        System.out.println();
+
 
         System.out.println("9. Nome e setor da pessoa mais jovem:");
-
+        Pessoa menorIdade = lista.stream()
+                            .min(Comparator.comparing(Pessoa::getIdade))
+                            .orElse(null);
+        System.out.println(menorIdade.getNome());
+        System.out.println(menorIdade.getDpto());
+        
         /*
 		System.out.println();
         double media = lista.stream()
